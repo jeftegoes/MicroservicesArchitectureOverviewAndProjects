@@ -13,7 +13,7 @@ namespace Catalog.API.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<Product>> GetsProducts() => 
+        public async Task<IEnumerable<Product>> GetProducts() => 
             await _context.Products.Find(p => true).ToListAsync();
 
         public async Task<Product> GetProduct(string id) 
