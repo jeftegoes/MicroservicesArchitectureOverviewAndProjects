@@ -1,0 +1,22 @@
+version: '3.4'
+
+services:
+  mongodb_dev:
+    container_name: mongodb_dev
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - "mongo_data:/data/db"
+  catalog.api:
+    container_name: catalog.api.dev
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - "DatabaseSettings:ConnectionString=mongodb://mongodb_dev:27017"
+    depends_on:
+      - mongodb_dev
+    ports:
+      - "8000:80"
+    volumes:
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
