@@ -48,7 +48,7 @@ services:
     container_name: catalog.api.dev
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - "DatabaseSettings:ConnectionString=mongodb://mongodb_dev:27017"
+      - "DatabaseSettings__ConnectionString=mongodb://mongodb_dev:27017"
     depends_on:
       - mongodb_dev
     ports:
@@ -58,8 +58,8 @@ services:
     container_name: basket.api.dev
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - "CacheSettings:ConnectionString=redis_dev:6379"
-      - "GrpcSettings:DiscountUrl=http://discount.grpc.dev"
+      - "CacheSettings__ConnectionString=redis_dev:6379"
+      - "GrpcSettings__DiscountUrl=http://discount.grpc.dev"
     depends_on:
       - redis_dev
     ports:
@@ -69,7 +69,7 @@ services:
     container_name: discount.api.dev
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - "DatabaseSettings:ConnectionString=Server=postgresql_dev;Port=5432;Database=DiscountDb;User Id=admin;Password=admin1234;"
+      - "DatabaseSettings__ConnectionString=Server=postgresql_dev;Port=5432;Database=DiscountDb;User Id=admin;Password=admin1234;"
     depends_on:
       - postgresql_dev
       - pgadmin_dev
@@ -80,7 +80,7 @@ services:
     container_name: discount.grpc.dev
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - "DatabaseSettings:ConnectionString=Server=postgresql_dev;Port=5432;Database=DiscountDb;User Id=admin;Password=admin1234;"
+      - "DatabaseSettings__ConnectionString=Server=postgresql_dev;Port=5432;Database=DiscountDb;User Id=admin;Password=admin1234;"
     depends_on:
       - postgresql_dev
       - pgadmin_dev
