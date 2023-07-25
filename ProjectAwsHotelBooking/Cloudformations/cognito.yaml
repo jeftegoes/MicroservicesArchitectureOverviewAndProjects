@@ -5,7 +5,7 @@ Parameters:
   UserPoolName:
     Description: (...)
     Type: String
-    Default: Test
+    Default: CupByCloudFormation
 
 Resources:
   # CUP - CognitoUserPool
@@ -13,6 +13,12 @@ Resources:
     Type: AWS::Cognito::UserPool
     Properties:
       UserPoolName: !Ref UserPoolName
+      UsernameAttributes:
+        - email
+      AutoVerifiedAttributes:
+        - email
+      VerificationMessageTemplate:
+        DefaultEmailOption: CONFIRM_WITH_CODE
       Policies:
         PasswordPolicy:
           MinimumLength: 8
@@ -21,13 +27,6 @@ Resources:
           RequireSymbols: false
           RequireUppercase: false
           TemporaryPasswordValidityDays: 30
-      Schema:
-        - Name: name
-          AttributeDataType: String
-          Required: true
-        - Name: email
-          AttributeDataType: String
-          Required: true
       MfaConfiguration: "OFF"
       EmailConfiguration:
         EmailSendingAccount: COGNITO_DEFAULT
@@ -39,10 +38,6 @@ Resources:
       ClientName: "TestMyWebClientName"
       UserPoolId: !Ref CustomCognitoUserPool
       GenerateSecret: false
-      CallbackURLs:
-        - "http://localhost:8090/hotel"
-      LogoutURLs:
-        - "http://localhost:8090/hotel"
 
   # Groups
   AdminGroup:

@@ -1,0 +1,18 @@
+Sign UP!!!
+<label for="email">Email:</label>
+<input id="email" name="email" type="email" [(ngModel)]="user.email" />
+
+<label for="password">Password:</label>
+<input
+  id="password"
+  name="password"
+  type="password"
+  [(ngModel)]="user.password"
+/>
+
+<button type="button" (click)="signUp()">Sign up</button>
+<div *ngIf="isConfirm == true">
+  <label for="code">Code:</label>
+  <input id="code" name="code" type="text" [(ngModel)]="user.code" />
+  <button type="button" (click)="confirmSignUp()">Confirm</button>
+</div>
