@@ -1,14 +1,23 @@
-﻿using System.Text;
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Net;
+using System.Text;
+using System.Text.Json;
+using Amazon;
+using Amazon.DynamoDBv2;
+using Amazon.DynamoDBv2.DataModel;
 using Amazon.Lambda.APIGatewayEvents;
 using Amazon.Lambda.Core;
 using Amazon.Lambda.Serialization.SystemTextJson;
+using Amazon.S3;
+using Amazon.S3.Model;
 using HttpMultipartParser;
+using SaveHotel.LambdaConsole.Models;
 
 [assembly: LambdaSerializer(typeof(DefaultLambdaJsonSerializer))]
 
 public class HotelController
 {
-    public APIGatewayProxyResponse SaveHotel(APIGatewayProxyRequest request, ILambdaContext context)
+    public async Task<APIGatewayProxyResponse> SaveHotel(APIGatewayProxyRequest request, ILambdaContext context)
     {
         var response = new APIGatewayProxyResponse()
         {
@@ -35,7 +44,46 @@ public class HotelController
             var fileName = file.FileName;
 
             var userId = formData.GetParameterValue("userId");
-            var token = formData.GetParameterValue("token");
+            var idToken = formData.GetParameterValue("idToken");
+
+            // var token = new JwtSecurityToken(idToken);
+            // var group = token.Claims.FirstOrDefault(x => x.Type == "cognito:groups");
+
+            // if (group == null || group.Value != "Admin")
+            // {
+            //     response.StatusCode = (int)HttpStatusCode.Unauthorized;
+            //     response.Body = JsonSerializer.Serialize(new { Error = "Must be administration group!" });
+            // }
+
+            var region = Environment.GetEnvironmentVariable("AWS_REGION");
+            var bucketName = Environment.GetEnvironmentVariable("bucketName");
+
+            var s3client = new AmazonS3Client(RegionEndpoint.GetBySystemName(region));
+            var dbClient = new AmazonDynamoDBClient(RegionEndpoint.GetBySystemName(region));
+
+            await s3client.PutObjectAsync(new PutObjectRequest()
+            {
+                BucketName = bucketName,
+                Key = fileName,
+                InputStream = stream,
+                AutoCloseStream = true
+            });
+
+            var hotel = new Hotel()
+            {
+                UserId = userId,
+                Id = Guid.NewGuid().ToString(),
+                Name = name,
+                Price = int.Parse(price),
+                Rating = int.Parse(rating),
+                CityName = city,
+                FileName = fileName
+            };
+
+            using (var dbContext = new DynamoDBContext(dbClient))
+            {
+                await dbContext.SaveAsync(hotel);
+            };
         }
 
         Console.WriteLine("Hotel saved successfully!");

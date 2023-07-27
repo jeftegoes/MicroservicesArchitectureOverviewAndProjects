@@ -19,6 +19,15 @@
   *ngIf="isAuthenticated"
   >Profile</a
 >
+
+<a
+  class="nav-link"
+  routerLink="/admin"
+  routerLinkActive="active"
+  *ngIf="isAuthenticated"
+  >Admin</a
+>
+
 <a class="nav-link" routerLink="" (click)="signOut()" *ngIf="isAuthenticated"
   >Sign out</a
 >

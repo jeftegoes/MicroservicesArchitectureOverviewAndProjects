@@ -1,0 +1,40 @@
+<label for="name">Name:</label>
+<input
+  id="name"
+  name="name"
+  type="text"
+  placeholder="Name"
+  [(ngModel)]="hotel.name"
+/>
+
+<label for="rating">Rating:</label>
+<input
+  id="emratingail"
+  name="rating"
+  type="number"
+  placeholder="Rating"
+  [(ngModel)]="hotel.rating"
+/>
+
+<label for="city">City:</label>
+<input
+  id="city"
+  name="city"
+  type="text"
+  placeholder="City"
+  [(ngModel)]="hotel.city"
+/>
+
+<label for="price">Price:</label>
+<input
+  id="price"
+  name="price"
+  type="number"
+  placeholder="Price"
+  [(ngModel)]="hotel.price"
+/>
+
+<label for="file">Photo:</label>
+<input id="file" name="file" type="file" (change)="onFileChange($event)" />
+
+<button (click)="uploadFile()">Upload</button>
