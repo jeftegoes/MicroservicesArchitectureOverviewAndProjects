@@ -8,7 +8,7 @@ import { IUser } from './interfaces/IUser';
   providedIn: 'root',
 })
 export class CognitoService {
-  private authenticationSubject: BehaviorSubject<any>;
+  public authenticationSubject: BehaviorSubject<any>;
 
   constructor() {
     Amplify.configure({
@@ -30,7 +30,14 @@ export class CognitoService {
   }
 
   public signIn(user: IUser): Promise<any> {
-    return Auth.signIn(user.email, user.password).then(() => {
+    return Auth.signIn(user.email, user.password).then((res) => {
+      if (res.challengeName == 'NEW_PASSWORD_REQUIRED')
+        Auth.completeNewPassword(res, user.password);
+
+      localStorage.setItem(
+        'cognitoIdToken',
+        res.signInUserSession.idToken.jwtToken
+      );
       this.authenticationSubject.next(true);
     });
   }
@@ -39,24 +46,6 @@ export class CognitoService {
     return Auth.signOut().then(() => {
       this.authenticationSubject.next(false);
     });
-  }
-
-  public isAuthenticated(): Promise<boolean> {
-    if (this.authenticationSubject.value) {
-      return Promise.resolve(true);
-    } else {
-      return this.getUser()
-        .then((user: any) => {
-          if (user) {
-            return true;
-          } else {
-            return false;
-          }
-        })
-        .catch(() => {
-          return false;
-        });
-    }
   }
 
   public getUser(): Promise<any> {

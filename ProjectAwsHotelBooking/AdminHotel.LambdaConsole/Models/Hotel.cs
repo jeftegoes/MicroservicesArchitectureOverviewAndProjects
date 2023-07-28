@@ -1,6 +1,6 @@
 using Amazon.DynamoDBv2.DataModel;
 
-namespace SaveHotel.LambdaConsole.Models
+namespace AdminHotel.LambdaConsole.Models
 {
     [DynamoDBTable("Hotels")]
     public class Hotel

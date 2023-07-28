@@ -17,7 +17,7 @@ export class AppComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    this.cognitoService.isAuthenticated().then((success: boolean) => {
+    this.cognitoService.authenticationSubject.subscribe((success: boolean) => {
       this.isAuthenticated = success;
     });
   }

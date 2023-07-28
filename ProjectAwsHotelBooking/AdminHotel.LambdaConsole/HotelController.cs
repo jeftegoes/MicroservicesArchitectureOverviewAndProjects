@@ -1,0 +1,146 @@
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Net;
+using System.Security.Claims;
+using System.Text;
+using System.Text.Json;
+using Amazon;
+using Amazon.DynamoDBv2;
+using Amazon.DynamoDBv2.DataModel;
+using Amazon.DynamoDBv2.DocumentModel;
+using Amazon.Lambda.APIGatewayEvents;
+using Amazon.Lambda.Core;
+using Amazon.Lambda.Serialization.SystemTextJson;
+using Amazon.S3;
+using Amazon.S3.Model;
+using HttpMultipartParser;
+using AdminHotel.LambdaConsole.Models;
+
+[assembly: LambdaSerializer(typeof(DefaultLambdaJsonSerializer))]
+
+public class HotelController
+{
+    private APIGatewayProxyResponse GetDefaultResponse()
+    {
+        var response = new APIGatewayProxyResponse()
+        {
+            Headers = new Dictionary<string, string>(),
+            StatusCode = 200
+        };
+
+        response.Headers.Add("Access-Control-Allow-Origin", "*");
+        response.Headers.Add("Access-Control-Allow-Headers", "*");
+        response.Headers.Add("Access-Control-Allow-Methods", "OPTIONS, POST");
+        response.Headers.Add("Content-Type", "application/json");
+
+        return response;
+    }
+
+    private IEnumerable<Claim> GetTokenClaims(string token)
+    {
+        var details = new JwtSecurityToken(token);
+        return details.Claims;
+    }
+
+    private string GetRegionName()
+    {
+        return Environment.GetEnvironmentVariable("AWS_REGION") ?? "sa-east-1";
+    }
+
+    public async Task<APIGatewayProxyResponse> ListHotels(APIGatewayProxyRequest request)
+    {
+        var response = GetDefaultResponse();
+
+        if (request?.QueryStringParameters == null)
+        {
+            response.StatusCode = (int)HttpStatusCode.BadRequest;
+            response.Body = "Query string is null.";
+            return response;
+        }
+
+        var token = request.QueryStringParameters.ContainsKey("token") ? request.QueryStringParameters["token"] : "";
+        if (string.IsNullOrEmpty(token))
+        {
+            response.StatusCode = (int)HttpStatusCode.BadRequest;
+            response.Body = JsonSerializer.Serialize(new { Error = "Query parameter 'token' not present." });
+            return response;
+        }
+
+        var userId = GetTokenClaims(token).FirstOrDefault(x => x.Type == "cognito:username")?.Value;
+
+        var dbClient = new AmazonDynamoDBClient(RegionEndpoint.GetBySystemName(GetRegionName()));
+
+        using (var dbContext = new DynamoDBContext(dbClient))
+        {
+            var condition = new[] { new ScanCondition("UserId", ScanOperator.Equal, userId) };
+            var hotels = await dbContext.ScanAsync<Hotel>(condition).GetRemainingAsync();
+            response.Body = JsonSerializer.Serialize(hotels);
+        };
+
+        return response;
+    }
+
+    public async Task<APIGatewayProxyResponse> SaveHotel(APIGatewayProxyRequest request, ILambdaContext context)
+    {
+        var response = GetDefaultResponse();
+
+        var bodyContent = request.IsBase64Encoded ? Convert.FromBase64String(request.Body) : Encoding.UTF8.GetBytes(request.Body);
+
+        using (var stream = new MemoryStream(bodyContent))
+        {
+            var formData = MultipartFormDataParser.Parse(stream);
+
+            var name = formData.GetParameterValue("name");
+            var rating = formData.GetParameterValue("rating");
+            var city = formData.GetParameterValue("city");
+            var price = formData.GetParameterValue("price");
+
+            var file = formData.Files.FirstOrDefault();
+            var fileName = file.FileName;
+
+            var userId = formData.GetParameterValue("userId");
+            var token = formData.GetParameterValue("idToken");
+
+            var group = GetTokenClaims(token).FirstOrDefault(x => x.Type == "cognito:groups");
+
+            if (group == null || group.Value != "AdminGroup")
+            {
+                response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                response.Body = JsonSerializer.Serialize(new { Message = "Must be administration group!" });
+                return response;
+            }
+
+            var bucketName = Environment.GetEnvironmentVariable("bucketName");
+
+            var s3client = new AmazonS3Client(RegionEndpoint.GetBySystemName(GetRegionName()));
+            var dbClient = new AmazonDynamoDBClient(RegionEndpoint.GetBySystemName(GetRegionName()));
+
+            await s3client.PutObjectAsync(new PutObjectRequest()
+            {
+                BucketName = bucketName,
+                Key = fileName,
+                InputStream = stream,
+                AutoCloseStream = true
+            });
+
+            var hotel = new Hotel()
+            {
+                UserId = userId,
+                Id = Guid.NewGuid().ToString(),
+                Name = name,
+                Price = int.Parse(price),
+                Rating = int.Parse(rating),
+                CityName = city,
+                FileName = fileName
+            };
+
+            using (var dbContext = new DynamoDBContext(dbClient))
+            {
+                await dbContext.SaveAsync(hotel);
+            };
+        }
+
+        response.Body = JsonSerializer.Serialize(new { Message = "Hotel saved successfully!" });
+
+        return response;
+    }
+}

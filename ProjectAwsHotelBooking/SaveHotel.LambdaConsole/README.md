@@ -1,4 +1,0 @@
-- Lambda handler:
-  - Composition: `AssemblyName` + `Namespace.ClassName` + `Method`
-    - `SaveHotel.LambdaConsole::HotelController::SaveHotel`
-- `dotnet lambda package .\SaveHotel.LambdaConsole.csproj -o SaveHotel.zip`
