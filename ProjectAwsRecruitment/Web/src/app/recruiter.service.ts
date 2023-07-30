@@ -4,13 +4,13 @@ import { Injectable } from '@angular/core';
 @Injectable({
   providedIn: 'root',
 })
-export class HotelService {
+export class RecruiterService {
   private apiUrl =
     'https://ajz0lbx5nl.execute-api.sa-east-1.amazonaws.com/test/admin';
 
   constructor(private http: HttpClient) {}
 
-  saveHotel(data: { [key: string]: any }, file: File) {
+  saveCandidate(data: { [key: string]: any }, file: File) {
     const formData: FormData = new FormData();
     formData.append('file', file, file.name);
 

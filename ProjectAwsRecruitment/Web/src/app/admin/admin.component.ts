@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CognitoService } from '../cognito.service';
-import { HotelService } from '../hotel.service';
-import { IHotel } from '../interfaces/IHotel';
+import { ICandidate } from '../interfaces/ICandidate';
+import { RecruiterService } from '../recruiter.service';
 
 @Component({
   selector: 'app-admin',
@@ -10,13 +10,13 @@ import { IHotel } from '../interfaces/IHotel';
 })
 export class AdminComponent {
   selectedFile: File | null = null;
-  hotel: IHotel;
+candidate: ICandidate;
 
   constructor(
-    private hotelService: HotelService,
+    private recruiterService: RecruiterService,
     private cognitoService: CognitoService
   ) {
-    this.hotel = {} as IHotel;
+    this.candidate = {} as ICandidate;
   }
 
   onFileChange(event: any) {
@@ -26,11 +26,11 @@ export class AdminComponent {
   uploadFile() {
     this.cognitoService.getSession().then((session: any) => {
       this.cognitoService.getUser().then((user: any) => {
-        this.hotel.userId = user.attributes.sub;
-        this.hotel.idToken = session.accessToken.jwtToken;
+        this.candidate.userId = user.attributes.sub;
+        this.candidate.idToken = session.accessToken.jwtToken;
 
         if (this.selectedFile) {
-          this.hotelService.saveHotel(this.hotel, this.selectedFile).subscribe(
+          this.recruiterService.saveCandidate(this.candidate, this.selectedFile).subscribe(
             (response) => {
               console.log('File uploaded successfully!', response);
             },

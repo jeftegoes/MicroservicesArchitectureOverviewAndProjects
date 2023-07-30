@@ -1,0 +1,8 @@
+- Lambda handler:
+  - Composition: `AssemblyName` + `Namespace.ClassName` + `Method`
+    - `Authorizer.LambdaConsole::Authorizer::Auth`
+- `dotnet lambda package .\Authorizer.LambdaConsole.csproj -o Authorizer.LambdaConsole.zip`
+- Verifying a JSON Web Token
+  - https://docs.aws.amazon.com/cognito/latest/developerguide/amazon-cognito-user-pools-using-tokens-verifying-a-jwt.html
+  - `https://cognito-idp.<Region>.amazonaws.com/<userPoolId>/.well-known/jwks.json`
+    - https://cognito-idp.sa-east-1.amazonaws.com/sa-east-1_8rZDB3H5R/.well-known/jwks.json

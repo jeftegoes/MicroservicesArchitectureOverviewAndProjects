@@ -1,1 +1,0 @@
-lambda + roles SaveHotelLambdaConsoleManualExecutionRole + ListHotelsLambdaConsoleManualExecutionRole + environment variables

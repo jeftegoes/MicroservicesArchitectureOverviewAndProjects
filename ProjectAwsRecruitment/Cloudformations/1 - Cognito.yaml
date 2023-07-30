@@ -40,17 +40,11 @@ Resources:
       GenerateSecret: false
 
   # Groups
-  AdminGroup:
+  RecruitmentGroup:
     Type: AWS::Cognito::UserPoolGroup
     Properties:
       Description: (...)
-      GroupName: AdminGroup
-      UserPoolId: !Ref CustomCognitoUserPool
-  HotelManagerGroup:
-    Type: AWS::Cognito::UserPoolGroup
-    Properties:
-      Description: (...)
-      GroupName: ManagerGroup
+      GroupName: Recruitment
       UserPoolId: !Ref CustomCognitoUserPool
 
 Outputs:

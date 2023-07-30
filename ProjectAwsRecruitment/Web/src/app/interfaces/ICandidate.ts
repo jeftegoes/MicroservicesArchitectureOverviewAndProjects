@@ -1,8 +1,8 @@
-export interface IHotel {
+export interface ICandidate {
   name: string;
   rating: number;
   city: string;
-  price: number;
+  salary: number;
   userId: string;
   idToken: string;
 }

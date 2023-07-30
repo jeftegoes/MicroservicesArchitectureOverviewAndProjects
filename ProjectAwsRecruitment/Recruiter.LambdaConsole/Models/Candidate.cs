@@ -1,9 +1,9 @@
 using Amazon.DynamoDBv2.DataModel;
 
-namespace AdminHotel.LambdaConsole.Models
+namespace Recruiter.LambdaConsole.Models
 {
-    [DynamoDBTable("Hotels")]
-    public class Hotel
+    [DynamoDBTable("Candidates")]
+    public class Candidate
     {
         [DynamoDBHashKey("userId")]
         public string UserId { get; set; }
@@ -12,9 +12,9 @@ namespace AdminHotel.LambdaConsole.Models
         public string Id { get; set; }
 
         public string Name { get; set; }
-        public int Price { get; set; }
+        public int Salary { get; set; }
         public int Rating { get; set; }
         public string CityName { get; set; }
-        public string FileName { get; set; }
+        public string Photo { get; set; }
     }
 }

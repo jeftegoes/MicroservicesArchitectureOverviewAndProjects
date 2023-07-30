@@ -13,11 +13,11 @@ using Amazon.Lambda.Serialization.SystemTextJson;
 using Amazon.S3;
 using Amazon.S3.Model;
 using HttpMultipartParser;
-using AdminHotel.LambdaConsole.Models;
+using Recruiter.LambdaConsole.Models;
 
 [assembly: LambdaSerializer(typeof(DefaultLambdaJsonSerializer))]
 
-public class HotelController
+public class RecruiterController
 {
     private APIGatewayProxyResponse GetDefaultResponse()
     {
@@ -46,7 +46,7 @@ public class HotelController
         return Environment.GetEnvironmentVariable("AWS_REGION") ?? "sa-east-1";
     }
 
-    public async Task<APIGatewayProxyResponse> ListHotels(APIGatewayProxyRequest request)
+    public async Task<APIGatewayProxyResponse> ListCandidates(APIGatewayProxyRequest request)
     {
         var response = GetDefaultResponse();
 
@@ -72,14 +72,14 @@ public class HotelController
         using (var dbContext = new DynamoDBContext(dbClient))
         {
             var condition = new[] { new ScanCondition("UserId", ScanOperator.Equal, userId) };
-            var hotels = await dbContext.ScanAsync<Hotel>(condition).GetRemainingAsync();
-            response.Body = JsonSerializer.Serialize(hotels);
+            var candidates = await dbContext.ScanAsync<Candidate>(condition).GetRemainingAsync();
+            response.Body = JsonSerializer.Serialize(candidates);
         };
 
         return response;
     }
 
-    public async Task<APIGatewayProxyResponse> SaveHotel(APIGatewayProxyRequest request, ILambdaContext context)
+    public async Task<APIGatewayProxyResponse> SaveCandidate(APIGatewayProxyRequest request, ILambdaContext context)
     {
         var response = GetDefaultResponse();
 
@@ -92,10 +92,10 @@ public class HotelController
             var name = formData.GetParameterValue("name");
             var rating = formData.GetParameterValue("rating");
             var city = formData.GetParameterValue("city");
-            var price = formData.GetParameterValue("price");
+            var salary = formData.GetParameterValue("price");
 
             var file = formData.Files.FirstOrDefault();
-            var fileName = file.FileName;
+            var photo = file.FileName;
 
             var userId = formData.GetParameterValue("userId");
             var token = formData.GetParameterValue("idToken");
@@ -117,29 +117,29 @@ public class HotelController
             await s3client.PutObjectAsync(new PutObjectRequest()
             {
                 BucketName = bucketName,
-                Key = fileName,
+                Key = photo,
                 InputStream = stream,
                 AutoCloseStream = true
             });
 
-            var hotel = new Hotel()
+            var candidate = new Candidate()
             {
                 UserId = userId,
                 Id = Guid.NewGuid().ToString(),
                 Name = name,
-                Price = int.Parse(price),
+                Salary = int.Parse(salary),
                 Rating = int.Parse(rating),
                 CityName = city,
-                FileName = fileName
+                Photo = photo
             };
 
             using (var dbContext = new DynamoDBContext(dbClient))
             {
-                await dbContext.SaveAsync(hotel);
+                await dbContext.SaveAsync(candidate);
             };
         }
 
-        response.Body = JsonSerializer.Serialize(new { Message = "Hotel saved successfully!" });
+        response.Body = JsonSerializer.Serialize(new { Message = "Candidate saved successfully!" });
 
         return response;
     }

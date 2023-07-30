@@ -1,0 +1,5 @@
+- Lambda handler:
+  - Composition: `AssemblyName` + `Namespace.ClassName` + `Method`
+    - `Recruiter.LambdaConsole::RecruiterController::SaveCandidate`
+    - `Recruiter.LambdaConsole::RecruiterController::ListCandidates`
+- `dotnet lambda package .\Recruiter.LambdaConsole.csproj -o Recruiter.LambdaConsole.zip`
