@@ -6,7 +6,7 @@ import { Injectable } from '@angular/core';
 })
 export class RecruiterService {
   private apiUrl =
-    'https://ajz0lbx5nl.execute-api.sa-east-1.amazonaws.com/test/admin';
+    'https://0w26cjnetj.execute-api.sa-east-1.amazonaws.com/test/recruiter';
 
   constructor(private http: HttpClient) {}
 

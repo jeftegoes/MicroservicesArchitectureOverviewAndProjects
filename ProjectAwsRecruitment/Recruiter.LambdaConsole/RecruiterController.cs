@@ -12,6 +12,9 @@ using Amazon.Lambda.Core;
 using Amazon.Lambda.Serialization.SystemTextJson;
 using Amazon.S3;
 using Amazon.S3.Model;
+using Amazon.SimpleNotificationService;
+using Amazon.SimpleNotificationService.Model;
+using AutoMapper;
 using HttpMultipartParser;
 using Recruiter.LambdaConsole.Models;
 
@@ -92,7 +95,7 @@ public class RecruiterController
             var name = formData.GetParameterValue("name");
             var rating = formData.GetParameterValue("rating");
             var city = formData.GetParameterValue("city");
-            var salary = formData.GetParameterValue("price");
+            var salary = formData.GetParameterValue("salary");
 
             var file = formData.Files.FirstOrDefault();
             var photo = file.FileName;
@@ -137,6 +140,24 @@ public class RecruiterController
             {
                 await dbContext.SaveAsync(candidate);
             };
+
+            var mapperConfig = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<Candidate, CandidateCreatedEvent>()
+                    .ForMember(dest => dest.CreationDateTime, opt => opt.MapFrom(src => DateTime.Now))
+                    .ReverseMap();
+            });
+
+            var mapper = new Mapper(mapperConfig);
+
+            var candidateCreatedEvent = mapper.Map<CandidateCreatedEvent>(candidate);
+
+            var snsClient = new AmazonSimpleNotificationServiceClient(RegionEndpoint.GetBySystemName(GetRegionName()));
+            var publisgReponse = await snsClient.PublishAsync(new PublishRequest()
+            {
+                TopicArn = Environment.GetEnvironmentVariable("snsTopicArn"),
+                Message = JsonSerializer.Serialize(candidateCreatedEvent)
+            });
         }
 
         response.Body = JsonSerializer.Serialize(new { Message = "Candidate saved successfully!" });
