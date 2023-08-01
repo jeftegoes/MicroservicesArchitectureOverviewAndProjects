@@ -153,10 +153,13 @@ public class RecruiterController
             var candidateCreatedEvent = mapper.Map<CandidateCreatedEvent>(candidate);
 
             var snsClient = new AmazonSimpleNotificationServiceClient(RegionEndpoint.GetBySystemName(GetRegionName()));
+
+            var message = JsonSerializer.Serialize(candidateCreatedEvent);
+
             var publisgReponse = await snsClient.PublishAsync(new PublishRequest()
             {
                 TopicArn = Environment.GetEnvironmentVariable("snsTopicArn"),
-                Message = JsonSerializer.Serialize(candidateCreatedEvent)
+                Message = message
             });
         }
 

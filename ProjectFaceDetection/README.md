@@ -21,7 +21,7 @@
 | Orders.Api                     | Send the processed image to the database            | net5.0         | webapi   | 5000        |
 | CustomerNotification.Service   | Notify the client that the event has been processed | net7.0         | console  | XXXX        |
 
-![Diagram](FaceDetectionUseCase.png)
+![Diagram](FaceDetectionDiagram.png)
 
 ## 2.1. Others services
 

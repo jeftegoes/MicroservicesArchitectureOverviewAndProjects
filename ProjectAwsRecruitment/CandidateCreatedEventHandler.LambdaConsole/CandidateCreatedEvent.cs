@@ -9,7 +9,7 @@ using Nest;
 
 [assembly: LambdaSerializer(typeof(DefaultLambdaJsonSerializer))]
 
-public class CandidateCreatedEventHandler
+public class CandidateCreatedEvent
 {
     private string GetRegionName()
     {

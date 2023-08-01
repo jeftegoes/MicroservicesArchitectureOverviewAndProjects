@@ -1,3 +1,5 @@
+![Diagram](RecruitmentDiagram.png)
+
 # TO DO
 
 - Frontend

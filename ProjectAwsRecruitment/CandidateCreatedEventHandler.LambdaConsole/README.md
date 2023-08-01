@@ -1,0 +1,4 @@
+- Lambda handler:
+  - Composition: `AssemblyName` + `Namespace.ClassName` + `Method`
+    - `CandidateCreatedEvent.LambdaConsole::CandidateCreatedEvent::Handler`
+- `dotnet lambda package .\CandidateCreatedEvent.LambdaConsole.csproj -o CandidateCreatedEvent.LambdaConsole.zip`
