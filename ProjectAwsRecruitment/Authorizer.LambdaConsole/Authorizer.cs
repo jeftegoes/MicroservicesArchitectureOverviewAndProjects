@@ -66,8 +66,10 @@ public class Authorizer
 
         var apiGroupMapping = new Dictionary<string, string>()
         {
-            {"listRecruiters", "Recruiter"},
-            {"recruiter", "Recruiter"}
+            // {"listRecruiters", "Recruiter"},
+            // {"recruiter", "Recruiter"}
+            // {"listRecruiters", "AdminGroup"},
+            {"recruiter", "AdminGroup"}
         };
 
         var expectedGroup = apiGroupMapping.FirstOrDefault(x => request.Path.Contains(x.Key, StringComparison.InvariantCultureIgnoreCase));

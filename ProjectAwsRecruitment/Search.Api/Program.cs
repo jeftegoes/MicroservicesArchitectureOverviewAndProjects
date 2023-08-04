@@ -1,10 +1,50 @@
+using System.Net;
+using System.Net.Http.Headers;
+using System.Text.Json;
 using Nest;
+using Polly;
+using Polly.CircuitBreaker;
 
 var builder = WebApplication.CreateBuilder(args);
 
 var app = builder.Build();
 
+var circuitBreakerPolicy = Policy<List<Candidate>>
+    .Handle<Exception>()
+    .CircuitBreakerAsync(3, TimeSpan.FromSeconds(30));
+
 app.MapGet("/search", async (string? city, int? rating) =>
+{
+    var result = new HttpResponseMessage();
+
+    try
+    {
+        var candidates = circuitBreakerPolicy.ExecuteAsync(async () =>
+        {
+            return await SearchCandidates(city, rating);
+        });
+
+        result.StatusCode = HttpStatusCode.OK;
+        result.Content = new StringContent(JsonSerializer.Serialize(candidates));
+        result.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+        return result;
+    }
+    catch (BrokenCircuitException)
+    {
+        result.StatusCode = HttpStatusCode.NotAcceptable;
+        result.ReasonPhrase = "Circuit is OPEN.";
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine(ex);
+        throw;
+    }
+
+    return result;
+});
+
+async Task<List<Candidate>> SearchCandidates(string? city, int? rating)
 {
     var host = Environment.GetEnvironmentVariable("host");
     var username = Environment.GetEnvironmentVariable("userName");
@@ -47,6 +87,6 @@ app.MapGet("/search", async (string? city, int? rating) =>
     );
 
     return result.Hits.Select(x => x.Source).ToList();
-});
+}
 
 app.Run();
