@@ -7,7 +7,6 @@ namespace Recruiter.LambdaConsole.Models
     {
         [DynamoDBHashKey("userId")]
         public string UserId { get; set; }
-
         [DynamoDBRangeKey("Id")]
         public string Id { get; set; }
 

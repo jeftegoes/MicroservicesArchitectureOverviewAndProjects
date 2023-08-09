@@ -44,10 +44,8 @@ public class RecruiterController
         return details.Claims;
     }
 
-    private string GetRegionName()
-    {
-        return Environment.GetEnvironmentVariable("AWS_REGION") ?? "sa-east-1";
-    }
+    private string GetRegionName() =>
+        Environment.GetEnvironmentVariable("AWS_REGION") ?? "sa-east-1";
 
     public async Task<APIGatewayProxyResponse> ListCandidates(APIGatewayProxyRequest request)
     {

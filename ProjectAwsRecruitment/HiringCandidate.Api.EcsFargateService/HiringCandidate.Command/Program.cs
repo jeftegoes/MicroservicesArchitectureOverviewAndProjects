@@ -1,44 +1,53 @@
+using System.IdentityModel.Tokens.Jwt;
+using System.Net;
+using System.Security.Claims;
+using Amazon;
+using Amazon.DynamoDBv2;
+using Amazon.DynamoDBv2.DataModel;
+using Microsoft.AspNetCore.Mvc;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddCors(x =>
+    x.AddDefaultPolicy(p =>
+        p.AllowAnyOrigin().AllowAnyHeader().AllowAnyHeader()));
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+string GetRegionName() =>
+    Environment.GetEnvironmentVariable("AWS_REGION") ?? "sa-east-1";
+
+IEnumerable<Claim> GetTokenClaims(string token)
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    var details = new JwtSecurityToken(token);
+    return details.Claims;
 }
 
-app.UseHttpsRedirection();
-
-var summaries = new[]
+app.MapPost("/hiring", async ([FromBody] HiredRequest request) =>
 {
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+    var userId = GetTokenClaims(request.IdToken).FirstOrDefault(x => x.Type == "cognito:username")?.Value ?? "";
 
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast")
-.WithOpenApi();
+    var hired = new Hired()
+    {
+        CandidateId = request.CandidateId,
+        HiringDate = request.HiringDate,
+        StartDate = request.StartDate,
+        UserId = userId,
+        Id = Guid.NewGuid().ToString(),
+        LinkedIn = string.Empty,
+        PhoneNumber = string.Empty,
+        Email = string.Empty,
+        HiringStatus = HiringStatus.Pending
+    };
+
+    var dbClient = new AmazonDynamoDBClient(RegionEndpoint.GetBySystemName(GetRegionName()));
+
+    using (var dbContext = new DynamoDBContext(dbClient))
+    {
+        await dbContext.SaveAsync(hired);
+    };
+});
+
+app.MapGet("/health", () => new HttpResponseMessage(HttpStatusCode.OK));
 
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}

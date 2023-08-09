@@ -1,6 +1,6 @@
-<mxfile host="Electron" modified="2023-08-06T01:54:29.354Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/21.5.1 Chrome/112.0.5615.204 Electron/24.6.0 Safari/537.36" etag="GTEDDaGiLsHQ31bE0Mno" version="21.5.1" type="device">
+<mxfile host="Electron" modified="2023-08-09T01:30:16.664Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/21.5.1 Chrome/112.0.5615.204 Electron/24.6.0 Safari/537.36" etag="ZCxMmYY3bl4XNsvG7-IZ" version="21.5.1" type="device">
   <diagram name="Page-1" id="7nIbmzHHHe7wAutQFev3">
-    <mxGraphModel dx="2901" dy="2023" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="2885" dy="2007" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -91,12 +91,12 @@
         <mxCell id="6dRfuFZK9p9CnIERoRmi-11" value="DynamoDB&lt;br&gt;(Candidates + CandidatesCreatedEventIds)" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#232F3E;gradientColor=#4D72F3;gradientDirection=north;fillColor=#3334B9;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.dynamodb;" parent="1" vertex="1">
           <mxGeometry x="930" y="442" width="78" height="78" as="geometry" />
         </mxCell>
-        <mxCell id="lkytduWUvkZsdB2xdx4u-6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="6dRfuFZK9p9CnIERoRmi-14" target="lkytduWUvkZsdB2xdx4u-5">
+        <mxCell id="lkytduWUvkZsdB2xdx4u-6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="6dRfuFZK9p9CnIERoRmi-14" target="lkytduWUvkZsdB2xdx4u-5" edge="1">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="1412" y="172" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="lkytduWUvkZsdB2xdx4u-8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="6dRfuFZK9p9CnIERoRmi-14" target="lkytduWUvkZsdB2xdx4u-3">
+        <mxCell id="lkytduWUvkZsdB2xdx4u-8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="6dRfuFZK9p9CnIERoRmi-14" target="lkytduWUvkZsdB2xdx4u-3" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="6dRfuFZK9p9CnIERoRmi-14" value="SNS (Message bus)" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#232F3E;gradientColor=#FF4F8B;gradientDirection=north;fillColor=#BC1356;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.sns;" parent="1" vertex="1">
@@ -271,17 +271,26 @@
         <mxCell id="2bfARK35BcMjpJR4_JLp-38" value="Target Group &amp;gt; Private IP" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
           <mxGeometry x="201.5" y="-503" width="95" height="47.5" as="geometry" />
         </mxCell>
-        <mxCell id="lkytduWUvkZsdB2xdx4u-1" value="DynamoDB&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;(HiringCandidate)" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#232F3E;gradientColor=#4D72F3;gradientDirection=north;fillColor=#3334B9;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.dynamodb;" vertex="1" parent="1">
+        <mxCell id="lkytduWUvkZsdB2xdx4u-1" value="DynamoDB&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;(HiringCandidate)" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#232F3E;gradientColor=#4D72F3;gradientDirection=north;fillColor=#3334B9;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.dynamodb;" parent="1" vertex="1">
           <mxGeometry x="1530" y="-78" width="78" height="78" as="geometry" />
         </mxCell>
-        <mxCell id="lkytduWUvkZsdB2xdx4u-9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="lkytduWUvkZsdB2xdx4u-3" target="lkytduWUvkZsdB2xdx4u-1">
+        <mxCell id="lkytduWUvkZsdB2xdx4u-9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="lkytduWUvkZsdB2xdx4u-3" target="lkytduWUvkZsdB2xdx4u-1" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="lkytduWUvkZsdB2xdx4u-3" value="HiringCandidateEventHandler.LambdaConsole" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#B0084D;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.event;" vertex="1" parent="1">
+        <mxCell id="lkytduWUvkZsdB2xdx4u-3" value="HiringCandidateEventHandler.LambdaConsole" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#B0084D;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.event;" parent="1" vertex="1">
           <mxGeometry x="1530" y="216" width="78" height="78" as="geometry" />
         </mxCell>
-        <mxCell id="lkytduWUvkZsdB2xdx4u-5" value="CandidateCreatedEventHandler.LambdaConsole" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#B0084D;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.event;" vertex="1" parent="1">
+        <mxCell id="lkytduWUvkZsdB2xdx4u-5" value="CandidateCreatedEventHandler.LambdaConsole" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#B0084D;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.event;" parent="1" vertex="1">
           <mxGeometry x="1368" y="100" width="78" height="78" as="geometry" />
+        </mxCell>
+        <mxCell id="wCbbjhAWS0xMDsnOdmbr-1" value="DynamoDB&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;(Hired)" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#232F3E;gradientColor=#4D72F3;gradientDirection=north;fillColor=#3334B9;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.dynamodb;" vertex="1" parent="1">
+          <mxGeometry x="1960" y="-39" width="78" height="78" as="geometry" />
+        </mxCell>
+        <mxCell id="wCbbjhAWS0xMDsnOdmbr-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="wCbbjhAWS0xMDsnOdmbr-2" target="wCbbjhAWS0xMDsnOdmbr-1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="wCbbjhAWS0xMDsnOdmbr-2" value="" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#232F3E;gradientColor=#F78E04;gradientDirection=north;fillColor=#D05C17;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.ecs;" vertex="1" parent="1">
+          <mxGeometry x="1960" y="-194" width="78" height="78" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
