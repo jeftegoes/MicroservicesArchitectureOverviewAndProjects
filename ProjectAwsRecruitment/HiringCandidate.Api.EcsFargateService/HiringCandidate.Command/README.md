@@ -1,22 +1,15 @@
-# Details
-
-- `Match` - where X = 'abc'
-- `Prefix` - where X like 'abc%'
-- `Range` - where between 0 and 10
-- `Fuzzy match` - where X like '%abc'
-
 - task_definition.json
 ```
 {
-    "taskDefinitionArn": "arn:aws:ecs:sa-east-1:939645320583:task-definition/search-microservice-task-definition:3",
+    "taskDefinitionArn": "arn:aws:ecs:sa-east-1:939645320583:task-definition/hiringcandidate-command:22",
     "containerDefinitions": [
         {
-            "name": "search",
-            "image": "939645320583.dkr.ecr.sa-east-1.amazonaws.com/mydockerimages",
+            "name": "hiringcandidate-command",
+            "image": "939645320583.dkr.ecr.sa-east-1.amazonaws.com/hiringcandidate.command",
             "cpu": 0,
             "portMappings": [
                 {
-                    "name": "search-80-tcp",
+                    "name": "hiringcandidate-command-80-tcp",
                     "containerPort": 80,
                     "hostPort": 80,
                     "protocol": "tcp",
@@ -24,24 +17,7 @@
                 }
             ],
             "essential": true,
-            "environment": [
-                {
-                    "name": "host",
-                    "value": "https://candidates.es.sa-east-1.aws.found.io"
-                },
-                {
-                    "name": "password",
-                    "value": "vdVSyerrS9Rbr3eynesw7b2Q"
-                },
-                {
-                    "name": "userName",
-                    "value": "elastic"
-                },
-                {
-                    "name": "indexName",
-                    "value": "index-candidate"
-                }
-            ],
+            "environment": [],
             "environmentFiles": [],
             "mountPoints": [],
             "volumesFrom": [],
@@ -59,7 +35,7 @@
             "healthCheck": {
                 "command": [
                     "CMD-SHELL",
-                    "curl -f http://localhost/search?city=SALVADOR&RATING=5 || exit 1"
+                    "curl -f http://localhost/health?param1=1&param2=2 || exit 1"
                 ],
                 "interval": 30,
                 "timeout": 5,
@@ -67,11 +43,11 @@
             }
         }
     ],
-    "family": "search-microservice-task-definition",
+    "family": "hiringcandidate-command",
     "taskRoleArn": "arn:aws:iam::939645320583:role/ecsTaskExecutionRole",
     "executionRoleArn": "arn:aws:iam::939645320583:role/ecsTaskExecutionRole",
     "networkMode": "awsvpc",
-    "revision": 3,
+    "revision": 22,
     "volumes": [],
     "status": "ACTIVE",
     "requiresAttributes": [
@@ -117,13 +93,13 @@
     "requiresCompatibilities": [
         "FARGATE"
     ],
-    "cpu": "256",
-    "memory": "512",
+    "cpu": "1024",
+    "memory": "2048",
     "runtimePlatform": {
         "cpuArchitecture": "X86_64",
         "operatingSystemFamily": "LINUX"
     },
-    "registeredAt": "2023-08-05T03:34:22.138Z",
+    "registeredAt": "2023-08-11T01:29:07.425Z",
     "registeredBy": "arn:aws:iam::939645320583:user/jeftegoesdev",
     "tags": []
 }
