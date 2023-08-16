@@ -1,0 +1,4 @@
+- Lambda handler:
+  - Composition: `AssemblyName` + `Namespace.ClassName` + `Method`
+    - `ReviewCandidate.Sidecar.EventHandler.LambdaConsole::ReviewCandidateEvent::Handler`
+- `dotnet lambda package .\ReviewCandidate.Sidecar.EventHandler.LambdaConsole.csproj -o ReviewCandidate.Sidecar.EventHandler.LambdaConsole.zip`
