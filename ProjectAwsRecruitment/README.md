@@ -3,7 +3,6 @@
 # TO DO
 
 - Frontend
-  - Image uploaded into s3 is broken
   - List candidates
   - Auth guard
 - Create default user admin...

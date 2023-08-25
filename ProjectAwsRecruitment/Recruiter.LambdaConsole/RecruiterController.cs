@@ -88,7 +88,7 @@ public class RecruiterController
 
         using (var stream = new MemoryStream(bodyContent))
         {
-            var formData = MultipartFormDataParser.Parse(stream);
+            var formData = await MultipartFormDataParser.ParseAsync(stream).ConfigureAwait(false);
 
             var name = formData.GetParameterValue("name");
             var rating = formData.GetParameterValue("rating");
@@ -119,8 +119,7 @@ public class RecruiterController
             {
                 BucketName = bucketName,
                 Key = photo,
-                InputStream = stream,
-                AutoCloseStream = true
+                InputStream = file.Data
             });
 
             var candidate = new Candidate()

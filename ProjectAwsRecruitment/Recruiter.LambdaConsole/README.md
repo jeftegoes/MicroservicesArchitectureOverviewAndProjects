@@ -3,3 +3,4 @@
     - `Recruiter.LambdaConsole::RecruiterController::SaveCandidate`
     - `Recruiter.LambdaConsole::RecruiterController::ListCandidates`
 - `dotnet lambda package .\Recruiter.LambdaConsole.csproj -o Recruiter.LambdaConsole.zip`
+- To upload image must be informed in `API Gateway` -> `Settings` -> `Binary Media Types` -> `multipart/form-data`
