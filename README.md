@@ -11,7 +11,9 @@
   - [3.1. Advantages](#31-advantages)
   - [3.2. Disadvantages](#32-disadvantages)
 - [4. Deployment](#4-deployment)
-- [Docker](#docker)
+- [5. Docker](#5-docker)
+- [6. Patters](#6-patters)
+  - [6.1. Sidecar](#61-sidecar)
 
 # 1. What are Microservices?
 
@@ -115,6 +117,15 @@
 
 ![Deployment](/Images/DeploymentMonolithicVsMicroservicesDiagram.png)
 
-# Docker
+# 5. Docker
 
 [Docker](https://github.com/jeftegoes/DockerOverviewAndCommands)
+
+# 6. Patters
+
+## 6.1. Sidecar
+
+- A secondary container is deployed alongside the main container for added functionality.
+- Normally the Sidecar performs cross-cutting concerns i.e., logging, monitoring, security etc.
+- The Sidecar and the main container share the state i.e., file storage, database cache etc.
+- One use of a Sidecar is to extend the functionality of a system (i.s., a microservice or monolithic application) without changing the code of the system, reducing the risk os breaking it.
