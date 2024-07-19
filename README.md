@@ -14,6 +14,9 @@
 - [5. Docker](#5-docker)
 - [6. Patters](#6-patters)
   - [6.1. Sidecar](#61-sidecar)
+  - [6.2. CQRS](#62-cqrs)
+  - [6.3. Fanout Pattern](#63-fanout-pattern)
+  - [6.4. Idempotent Consumer Pattern](#64-idempotent-consumer-pattern)
 
 # 1. What are Microservices?
 
@@ -128,4 +131,30 @@
 - A secondary container is deployed alongside the main container for added functionality.
 - Normally the Sidecar performs cross-cutting concerns i.e., logging, monitoring, security etc.
 - The Sidecar and the main container share the state i.e., file storage, database cache etc.
-- One use of a Sidecar is to extend the functionality of a system (i.s., a microservice or monolithic application) without changing the code of the system, reducing the risk os breaking it.
+- One use of a Sidecar is to extend the functionality of a system (i.s., a microservice or monolithic application) without changing the code of the system, reducing the risk of breaking it.
+  ![Sidecar Pattern Diagram](/Images/SidecarPatternDiagram.png)
+
+## 6.2. CQRS
+
+- The CQRS (Command Query Responsibility Segregation) segregates the **Command** (that inserts or updates into a database) and **Query** (read) for improved performance, and scalability.
+  ![CQRS Pattern Diagram](/Images/CQRSPatternDiagram.png)
+- **Why CQRS?**
+  - The volume (request per second) of read (Query) and write (Command) can differ.
+  - The ways databases are optimized for reading and writing are different.
+  - Queries are usually complex and require searching and indexing capabilities.
+  - CQRS is useful when the Query needs data to be obtained from multiple sources and be put together.
+
+## 6.3. Fanout Pattern
+
+- A microservice publishes an event to an **Event Bus**, such as **SNS**.
+- The **Event Bus** populates the event to many subscribing services concurrently.
+  ![Fanout Pattern Diagram](/Images/FanoutPatternDiagram.png)
+
+## 6.4. Idempotent Consumer Pattern
+
+- A microservice may receive an event more than once.
+- Microservice must be designed to process the event only once.
+- This is achieved by assigning a unique ID to an event.
+- Microservice stores the **Event ID** in a table.
+- Microservice checks the **Event ID** tables before processing an event...
+- Amazon SNS messages have a **unique Message ID**.
