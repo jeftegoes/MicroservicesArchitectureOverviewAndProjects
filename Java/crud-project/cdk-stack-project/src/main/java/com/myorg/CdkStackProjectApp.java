@@ -18,13 +18,23 @@ public class CdkStackProjectApp {
         ServiceStack serviceStack = new ServiceStack(app,
                 "service-stack-project",
                 clusterStack.getCluster(),
-                null,
-                null,
                 snsStack.getProductEventsTopic());
 
         serviceStack.addStackDependency(clusterStack);
         serviceStack.addStackDependency(rdsStack);
         serviceStack.addStackDependency(snsStack);
+
+        DynamoDbStack dynamoDbStack = new DynamoDbStack(app, "dynamodb-stack-project");
+
+        ServiceConsumerStack serviceConsumerStack = new ServiceConsumerStack(app,
+                "service-consumer-stack-project",
+                clusterStack.getCluster(),
+                snsStack.getProductEventsTopic(),
+                dynamoDbStack.getProductEventsDdb());
+
+        serviceConsumerStack.addStackDependency(clusterStack);
+        serviceConsumerStack.addStackDependency(snsStack);
+        serviceConsumerStack.addStackDependency(dynamoDbStack);
 
         app.synth();
     }

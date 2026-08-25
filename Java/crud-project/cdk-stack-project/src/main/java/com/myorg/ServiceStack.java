@@ -7,24 +7,20 @@ import software.amazon.awscdk.services.ecs.patterns.ApplicationLoadBalancedFarga
 import software.amazon.awscdk.services.ecs.patterns.ApplicationLoadBalancedTaskImageOptions;
 import software.amazon.awscdk.services.elasticloadbalancingv2.HealthCheck;
 import software.amazon.awscdk.services.events.targets.SnsTopic;
-import software.amazon.awscdk.services.iam.ManagedPolicy;
-import software.amazon.awscdk.services.iam.Role;
-import software.amazon.awscdk.services.iam.ServicePrincipal;
 import software.amazon.awscdk.services.logs.LogGroup;
 import software.constructs.Construct;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class ServiceStack extends Stack {
 
-    public ServiceStack(final Construct scope, final String id, Cluster cluster, Role executionRole, Role taskRole, SnsTopic productEventsTopic) {
-        this(scope, id, null, cluster, executionRole, taskRole, productEventsTopic);
+    public ServiceStack(final Construct scope, final String id, Cluster cluster, SnsTopic productEventsTopic) {
+        this(scope, id, null, cluster, productEventsTopic);
     }
 
 
-    public ServiceStack(final Construct scope, final String id, final StackProps props, Cluster cluster, Role executionRole, Role taskRole, SnsTopic productEventsTopic) {
+    public ServiceStack(final Construct scope, final String id, final StackProps props, Cluster cluster, SnsTopic productEventsTopic) {
         super(scope, id, props);
 
         Map<String, String> envVariables = new HashMap<>();
@@ -39,20 +35,6 @@ public class ServiceStack extends Stack {
                 .removalPolicy(RemovalPolicy.DESTROY)
                 .build();
 
-        Role role = Role.Builder.create(this, "ecs-execution-role-01")
-                .roleName("ecs-execution-role-01")
-                .assumedBy(
-                        new ServicePrincipal("ecs-tasks.amazonaws.com")
-                )
-                .managedPolicies(
-                        List.of(
-                                ManagedPolicy.fromAwsManagedPolicyName(
-                                        "service-role/AmazonECSTaskExecutionRolePolicy"
-                                )
-                        )
-                )
-                .build();
-
         ApplicationLoadBalancedFargateService service = ApplicationLoadBalancedFargateService.Builder
                 .create(this, "alb-01")
                 .serviceName("service-01")
@@ -64,10 +46,8 @@ public class ServiceStack extends Stack {
                 .taskImageOptions(
                         ApplicationLoadBalancedTaskImageOptions.builder()
                                 .containerName("aws-project-01")
-                                .image(ContainerImage.fromRegistry("jeftegoes/back-end-project-hub:1.0.0.q"))
+                                .image(ContainerImage.fromRegistry("jeftegoes/back-end-project-hub:1.0.0.0"))
                                 .containerPort(8080)
-//                                .executionRole(role)
-//                                .taskRole(role)
                                 .logDriver(LogDriver.awsLogs(AwsLogDriverProps.builder()
                                                 .logGroup(logGroup)
                                                 .streamPrefix("ecs")
